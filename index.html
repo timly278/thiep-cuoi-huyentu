@@ -100,7 +100,7 @@ body.past-hero .branches{opacity:.88}
 /* ===== HERO ===== */
 #hero{min-height:100svh;display:flex;align-items:center;padding:60px 0 80px;overflow:hidden}
 @media(max-height:760px){#hero{padding-top:150px}}
-#hero .lotus{position:absolute;top:-4px;right:-30px;width:min(46vw,230px);transform-origin:60% 85%;animation:swayLt 7s ease-in-out infinite}
+#hero .lotus{position:absolute;top:-4px;right:6px;width:min(46vw,230px);transform-origin:60% 85%;animation:swayLt 7s ease-in-out infinite}
 @keyframes swayLt{0%,100%{transform:rotate(2.5deg) translateY(0)}50%{transform:rotate(-2.5deg) translateY(4px)}}
 #hero .lily{position:absolute;top:-2px;left:6px;width:min(48vw,247px);transform-origin:53% 76%;animation:swayBq 6s ease-in-out infinite}
 @keyframes swayBq{0%,100%{transform:rotate(-3.5deg)}50%{transform:rotate(3.5deg)}}
@@ -276,7 +276,7 @@ body.side-trai #giftTrai{order:-1}
 #lb .ct{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#f3ead8;font-size:12px;letter-spacing:.2em}
 
 /* ===== Nút nhạc nền ===== */
-#musicBtn{position:fixed;right:12px;top:12px;z-index:71;width:40px;height:40px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:#fffaf0;color:#a63a50;font-size:19px;line-height:1;box-shadow:0 6px 16px rgba(80,50,30,.2);cursor:pointer}
+#musicBtn{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:71;width:40px;height:40px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:#fffaf0;color:#a63a50;font-size:19px;line-height:1;box-shadow:0 6px 16px rgba(80,50,30,.2);cursor:pointer}
 #musicBtn.on{animation:spinM 6s linear infinite}
 #musicBtn.off{opacity:.55;text-decoration:line-through}
 @keyframes spinM{to{transform:rotate(360deg)}}
