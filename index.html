@@ -40,7 +40,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;
 #cover .d-bell{top:0;left:50%;margin-left:calc(min(14vw,64px) / -2);width:min(14vw,64px);transform-origin:50% 0;animation:sway 5s ease-in-out infinite;z-index:1}
 #cover .d-bamboo{left:-4px;top:-2vh;width:min(60vw,330px);transform-origin:8% 100%;animation:swayBb 8s ease-in-out infinite;mix-blend-mode:multiply;z-index:0;-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 99%);mask-image:linear-gradient(to bottom,#000 60%,transparent 99%)}
 #cover .d-mtn{right:0;bottom:0;width:min(130vw,680px);z-index:0}
-#cover .d-lotus{bottom:-22px;right:-6px;width:min(38vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite;mix-blend-mode:multiply;z-index:1}
+#cover .d-lotus{bottom:-22px;right:-6px;width:min(38vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite;z-index:1}
 @keyframes swayBb{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.6deg)}}
 #cover .cpet{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .cp{position:absolute;will-change:transform,opacity;animation:cdrift linear infinite}
@@ -98,7 +98,7 @@ body.past-hero .branches{opacity:.88}
 #hero{min-height:100svh;display:flex;align-items:center;padding:60px 0 80px;overflow:hidden}
 @media(max-height:760px){#hero{padding-top:150px}}
 #hero .mtn{position:absolute;right:0;bottom:0;width:min(130vw,680px);pointer-events:none}
-#hero .lotus{position:absolute;bottom:-6px;right:-4px;width:min(44vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite;mix-blend-mode:multiply}
+#hero .lotus{position:absolute;bottom:-6px;right:-4px;width:min(44vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite}
 @keyframes swayLt{0%,100%{transform:rotate(2.5deg) translateY(0)}50%{transform:rotate(-2.5deg) translateY(4px)}}
 #hero .bamboo{position:absolute;top:-2px;left:-4px;width:min(58vw,300px);transform-origin:8% 100%;animation:swayBb 8s ease-in-out infinite;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 99%);mask-image:linear-gradient(to bottom,#000 60%,transparent 99%)}
 @keyframes swayBq{0%,100%{transform:rotate(-3.5deg)}50%{transform:rotate(3.5deg)}}
@@ -276,7 +276,8 @@ body.side-trai #giftTrai{order:-1}
 #lb .ct{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#f3ead8;font-size:12px;letter-spacing:.2em}
 
 /* ===== Nút nhạc nền ===== */
-#musicBtn{position:fixed;left:29px;bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:71;width:40px;height:40px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:#fffaf0;color:#a63a50;font-size:19px;line-height:1;box-shadow:0 6px 16px rgba(80,50,30,.2);cursor:pointer}
+#musicBtn{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));transition:left .35s ease,bottom .35s ease;z-index:71;width:40px;height:40px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:#fffaf0;color:#a63a50;font-size:19px;line-height:1;box-shadow:0 6px 16px rgba(80,50,30,.2);cursor:pointer}
+body.at-end #musicBtn{left:29px;bottom:calc(98px + env(safe-area-inset-bottom,0px))}
 #musicBtn.on{animation:spinM 6s linear infinite}
 #musicBtn.off{opacity:.55;text-decoration:line-through}
 @keyframes spinM{to{transform:rotate(360deg)}}
@@ -364,7 +365,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 <div id="cover">
   <img class="deco d-mtn" src="img/mountains.svg" alt="">
   <img class="deco d-bamboo" src="img/bamboo.webp" alt="">
-  <img class="deco d-bell" src="img/bell.svg" alt="">
+  <img class="deco d-bell" src="img/chime.webp" alt="">
   <div class="cpet" id="cpet"></div>
   <img class="deco d-lotus" src="img/lotus-pink.webp" alt="">
   <div class="hint">Bấm vào để xem thiệp</div>
@@ -383,7 +384,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
     <img class="mtn" src="img/mountains.svg" alt="">
     <img class="bamboo" src="img/bamboo.webp" alt="">
     <img class="lotus" src="img/lotus-pink.webp" alt="">
-    <img class="chime" src="img/bell.svg" alt="">
+    <img class="chime" src="img/chime.webp" alt="">
     <img class="bfly1" src="img/bfly1.webp" alt="">
     <img class="bfly2" src="img/bfly2.webp" alt="">
     <div class="wrap hero-in">
@@ -718,7 +719,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
   /* ---------- Cành đào hiện sau phần đầu thiệp ---------- */
   (function(){
     var ticking=false;
-    function chk(){ticking=false;document.body.classList.toggle('past-hero',window.scrollY>window.innerHeight*0.55)}
+    function chk(){ticking=false;var hh=document.getElementById('hero');document.body.classList.toggle('past-hero',hh?hh.getBoundingClientRect().bottom<40:window.scrollY>window.innerHeight*0.55);document.body.classList.toggle('at-end',document.documentElement.scrollHeight-(window.scrollY+window.innerHeight)<90)}
     window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(chk)}},{passive:true});
     chk();
   })();
