@@ -622,7 +622,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
   var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
   /* Cấu hình lấy từ .env (qua config.js). Thiếu mục nào thì dùng ảnh mặc định trong HTML. */
   var CFG=window.APP_CONFIG||{},IMG=CFG.IMG||{};
-  $('.fr[data-id]').forEach(function(fr){if(IMG[fr.dataset.id])fr.dataset.src=IMG[fr.dataset.id]});
+  $$('.fr[data-id]').forEach(function(fr){if(IMG[fr.dataset.id])fr.dataset.src=IMG[fr.dataset.id]});
   /* Ảnh cưới (album "Chung đôi"): tối đa 10 ảnh, lấy từ IMG_W1..IMG_W10 trong .env */
   (function(){
     var strip=$('#wedStrip'),n,f;

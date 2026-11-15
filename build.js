@@ -29,6 +29,19 @@ fs.readFileSync(envFile, 'utf8').split(/\r?\n/).forEach(function (line) {
 
 const warn = [];
 const isUrl = function (p) { return /^https?:\/\//.test(p); };
+/* Đường dẫn tuyệt đối trong thư mục dự án (vd kéo thả file vào .env) -> đổi thành đường dẫn tương đối,
+   vì trên GitHub Pages đường dẫn kiểu /Users/... không tồn tại. */
+const norm = function (key, p) {
+  if (isUrl(p)) return p;
+  if (path.isAbsolute(p) && fs.existsSync(p)) {
+    const rel = path.relative(dir, p);
+    if (!rel.startsWith('..')) {
+      warn.push(key + ': đã đổi đường dẫn tuyệt đối thành "' + rel.split(path.sep).join('/') + '" (nên sửa lại trong .env)');
+      return rel.split(path.sep).join('/');
+    }
+  }
+  return p;
+};
 const check = function (key, p) {
   if (!isUrl(p) && !fs.existsSync(path.join(dir, p))) warn.push('Không thấy file: ' + key + ' -> ' + p);
 };
@@ -43,15 +56,16 @@ Object.keys(env).forEach(function (k) {
     warn.push(k + ' bị bỏ qua (chỉ nhận IMG_W1..IMG_W' + MAX_WED + ')');
     return;
   }
-  cfg.IMG[name] = env[k];
-  check(k, env[k]);
+  cfg.IMG[name] = norm(k, env[k]);
+  check(k, cfg.IMG[name]);
 });
 
 for (let n = 1; n <= MAX_MP3; n++) {
   const v = env['MP3_' + n];
   if (!v) continue;
-  cfg.MUSIC.push(v);
-  check('MP3_' + n, v);
+  const p = norm('MP3_' + n, v);
+  cfg.MUSIC.push(p);
+  check('MP3_' + n, p);
 }
 Object.keys(env).forEach(function (k) {
   const m = /^MP3_(\d+)$/.exec(k);
