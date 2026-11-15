@@ -275,6 +275,13 @@ body.side-trai #giftTrai{order:-1}
 #lb .nx{right:10px;top:calc(50% - 21px)}
 #lb .ct{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#f3ead8;font-size:12px;letter-spacing:.2em}
 
+/* ===== Nút nhạc nền ===== */
+#musicBtn{position:fixed;right:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:71;width:40px;height:40px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:#fffaf0;color:#a63a50;font-size:19px;line-height:1;box-shadow:0 6px 16px rgba(80,50,30,.2);cursor:pointer}
+#musicBtn.on{animation:spinM 6s linear infinite}
+#musicBtn.off{opacity:.55;text-decoration:line-through}
+@keyframes spinM{to{transform:rotate(360deg)}}
+body:not(.opened) #musicBtn{display:none}
+
 /* album */
 .album{display:grid;gap:10px;margin-top:30px}
 
@@ -609,6 +616,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 </main>
 
 <div id="lb" role="dialog" aria-label="Xem ảnh"><img alt=""><button class="x" type="button" aria-label="Đóng">×</button><button class="pv" type="button" aria-label="Ảnh trước">‹</button><button class="nx" type="button" aria-label="Ảnh sau">›</button><div class="ct"></div></div>
+<button id="musicBtn" type="button" aria-label="Bật/tắt nhạc" hidden>♪</button>
 
 
 <script src="config.js"></script>
@@ -923,14 +931,22 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
   /* ---------- Nhạc nền (tối đa 2 file, đặt trong .env: MP3_1, MP3_2) ---------- */
   (function(){
     var list=((window.APP_CONFIG||{}).MUSIC||[]).slice(0,2);
+    var btn=document.getElementById('musicBtn');
     if(!list.length)return;
     var au=new Audio(),idx=0,want=false;
     au.preload='auto';
+    function ui(){var on=!au.paused&&!au.ended;btn.classList.toggle('on',on);btn.classList.toggle('off',!on)}
     function playIdx(i){
       idx=i%list.length;au.src=list[idx];
-      var p=au.play();if(p&&p.catch)p.catch(function(){});
+      var p=au.play();if(p&&p.then)p.then(ui,function(){ui()});
     }
     au.addEventListener('ended',function(){if(want)playIdx(idx+1)});
+    ['play','pause'].forEach(function(e){au.addEventListener(e,ui)});
+    btn.hidden=false;ui();
+    btn.addEventListener('click',function(){
+      if(au.paused){want=true;if(!au.src)playIdx(0);else{var p=au.play();if(p&&p.catch)p.catch(function(){})}}else{want=false;au.pause()}
+      ui();
+    });
     document.getElementById('openBtn').addEventListener('click',function(){want=true;if(au.paused)playIdx(idx)});
   })();
 
