@@ -9,8 +9,14 @@ THIỆP CƯỚI - HƯỚNG DẪN ĐƯA LÊN GITHUB PAGES
      Nhà gái :  .../<tên-repo>/?venue=nha-gai
      Nhà trai:  .../<tên-repo>/?venue=nha-trai
 
+THÊM ẢNH CƯỚI / NHẠC / ĐỔI ẢNH (mọi cấu hình nằm trong file .env):
+- Ảnh cưới: bỏ ảnh vào thư mục img/, điền IMG_W1 ... IMG_W10 (tối đa 10 ảnh).
+- Nhạc: bỏ file .mp3 vào thư mục audio/, điền MP3_1, MP3_2 (tối đa 2 file).
+- Sửa .env xong chạy lệnh:  node build.js   (sinh ra config.js)
+- Upload cả .env, config.js, thư mục img và audio lên GitHub.
+
 HIỆN TƯỜNG LỜI CHÚC (làm một lần):
 - Mở Google Sheet nhận câu trả lời của form > Tệp > Chia sẻ > Xuất bản lên web.
 - Chọn đúng trang tính chứa câu trả lời, định dạng "Giá trị được phân tách bằng dấu phẩy (.csv)" > Xuất bản.
-- Sao chép đường liên kết, gửi cho Claude (hoặc dán vào dòng  var SHEET_CSV='';  trong index.html).
+- Sao chép đường liên kết, dán vào dòng  SHEET_CSV=  trong file .env (không sửa index.html).
 LƯU Ý: bản xuất bản công khai toàn bộ cột của trang tính đó (họ tên, tham dự, lời chúc...).
