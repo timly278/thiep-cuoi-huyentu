@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1614 380 1300 720" preserveAspectRatio="xMaxYMax meet">
+<defs>
+<linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d7479" stop-opacity="0"/><stop offset=".35" stop-color="#6d7479" stop-opacity=".30"/><stop offset="1" stop-color="#6d7479" stop-opacity=".05"/></linearGradient>
+<linearGradient id="m2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#565d62" stop-opacity="0"/><stop offset=".3" stop-color="#565d62" stop-opacity=".42"/><stop offset="1" stop-color="#565d62" stop-opacity=".08"/></linearGradient>
+<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="26"/><feGaussianBlur stdDeviation="1.6"/></filter>
+<linearGradient id="fadeL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000"/><stop offset=".45" stop-color="#fff"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<mask id="fmR" maskUnits="userSpaceOnUse" x="1614" y="380" width="1300" height="720"><rect x="1614" y="380" width="1300" height="720" fill="url(#fadeL)"/></mask>
+<radialGradient id="mist"><stop offset="0" stop-color="#f5efe0" stop-opacity=".95"/><stop offset="1" stop-color="#f5efe0" stop-opacity="0"/></radialGradient>
+</defs>
+<g mask="url(#fmR)" opacity=".7">
+<path d="M3100,1100 L3100,1044 L1614,1044 L1614,820 L1864,700 L2014,610 L2174,560 L2294,480 L2414,420 L2534,500 L2654,470 L2794,540 L2914,600 L2914,1100 Z" fill="url(#m1)" filter="url(#rough)"/>
+<path d="M3100,1100 L3100,1044 L1614,1044 L1614,900 L1934,800 L2094,740 L2234,690 L2354,610 L2484,680 L2614,640 L2754,690 L2914,760 L2914,1100 Z" fill="url(#m2)" filter="url(#rough)"/>
+</g>
+<ellipse cx="2500" cy="640" rx="420" ry="60" fill="url(#mist)"/>
+<ellipse cx="2350" cy="830" rx="420" ry="60" fill="url(#mist)"/>
+<ellipse cx="2500" cy="980" rx="520" ry="70" fill="url(#mist)"/>
+</svg>

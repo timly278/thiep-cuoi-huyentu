@@ -37,20 +37,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;
 #cover .names .amp-i,footer .sign .amp-i,.amp-i{font-family:var(--serif);font-style:italic;font-weight:400}
 #cover .names{font-family:var(--script);font-weight:700;font-size:clamp(30px,8.6vw,44px);line-height:1.2;color:var(--ink);opacity:.95;text-align:center;padding:0 12px;z-index:2}
 #cover .deco{position:absolute;pointer-events:none}
-#cover .d-lantern{top:-6px;left:50%;margin-left:calc(min(20vw,100px) / -2);width:min(20vw,100px);transform-origin:50% 0;animation:sway 5s ease-in-out infinite}
-#cover .cb{position:absolute;pointer-events:none;z-index:0;transform-origin:var(--ox) 18%;animation:cbsway var(--sd) ease-in-out var(--dl) infinite}
-#cover .cb img{display:block;width:100%;mix-blend-mode:multiply}
-#cover .cb.m img{transform:scaleX(-1)}
-@keyframes cbsway{0%,100%{transform:rotate(calc((var(--a) - 1.8) * 1deg))}50%{transform:rotate(calc((var(--a) + 2.8) * 1deg))}}
-#cover .cb1{--w:min(52.8vw,304px);--ox:0%;--a:19;--sd:7s;--dl:0s;width:var(--w);left:-4px;top:calc(var(--w) * -0.14)}
-#cover .cb2{--w:min(32vw,200px);--ox:0%;--a:6;--sd:6s;--dl:-2s;width:var(--w);left:-4px;top:calc(20% - var(--w) * 0.16)}
-#cover .cb3{--w:min(36.8vw,232px);--ox:100%;--a:-13;--sd:8s;--dl:-3.5s;width:var(--w);right:-4px;top:calc(var(--w) * -0.15)}
+#cover .d-bell{top:0;left:50%;margin-left:calc(min(14vw,64px) / -2);width:min(14vw,64px);transform-origin:50% 0;animation:sway 5s ease-in-out infinite;z-index:1}
+#cover .d-bamboo{left:-4px;top:-2vh;width:min(60vw,330px);transform-origin:8% 100%;animation:swayBb 8s ease-in-out infinite;mix-blend-mode:multiply;z-index:0;-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 99%);mask-image:linear-gradient(to bottom,#000 60%,transparent 99%)}
+#cover .d-mtn{right:0;bottom:0;width:min(130vw,680px);z-index:0}
+#cover .d-lotus{bottom:-22px;right:-6px;width:min(38vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite;mix-blend-mode:multiply;z-index:1}
+@keyframes swayBb{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.6deg)}}
 #cover .cpet{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .cp{position:absolute;will-change:transform,opacity;animation:cdrift linear infinite}
 .cp i{display:block;background-size:contain;background-repeat:no-repeat;animation:cflut ease-in-out infinite alternate}
 @keyframes cdrift{0%{transform:translate(0,0);opacity:0}8%{opacity:1}82%{opacity:1}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
 @keyframes cflut{from{transform:translate(-7px,-5px) rotate(-30deg) scaleX(1)}50%{transform:translate(0,0) rotate(20deg) scaleX(.65)}to{transform:translate(7px,5px) rotate(70deg) scaleX(1)}}
-#cover .d-cosmos{bottom:-10px;right:-6px;width:min(32vw,150px)}
 @keyframes wobble{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-16px) rotate(2.5deg)}}
 @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 @keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
@@ -69,13 +65,13 @@ p.lead{text-align:center;color:var(--muted);font-size:15px;max-width:460px;margi
 
 
 /* cành đào lay hai bên (hiện khi đã qua phần đầu thiệp) */
-.branches{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity 1.4s ease}
+.branches{position:fixed;inset:0;pointer-events:none;z-index:0;mix-blend-mode:multiply;opacity:0;transition:opacity 1.4s ease}
 body.past-hero .branches{opacity:.88}
 .br{position:absolute;width:min(39.6vw,306px);will-change:transform}
-.br img{width:100%;mix-blend-mode:multiply}
-.br.r{right:-2px;top:52%;transform-origin:100% 16%;animation:windR 7.5s ease-in-out infinite}
-.br.l{left:-2px;top:8%;transform-origin:0 16%;animation:windL 6.5s ease-in-out infinite}
-.br.l img{transform:scaleX(-1)}
+.br img{width:100%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%,#000 55%,transparent 100%),linear-gradient(to right,#000 45%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 22%,#000 55%,transparent 100%),linear-gradient(to right,#000 45%,transparent 100%);mask-composite:intersect}
+.br.r{right:-2px;top:46%;transform-origin:100% 100%;animation:windR 7.5s ease-in-out infinite}
+.br.l{left:-2px;top:6%;transform-origin:0 100%;animation:windL 6.5s ease-in-out infinite}
+.br.r img{transform:scaleX(-1)}
 @keyframes windL{0%,100%{transform:rotate(-2.5deg) translateY(2px)}50%{transform:rotate(3.2deg) translateY(-8px)}}
 @keyframes windR{0%,100%{transform:rotate(2.5deg) translateY(-6px)}50%{transform:rotate(-3.2deg) translateY(6px)}}
 
@@ -100,13 +96,14 @@ body.past-hero .branches{opacity:.88}
 /* ===== HERO ===== */
 #hero{min-height:100svh;display:flex;align-items:center;padding:60px 0 80px;overflow:hidden}
 @media(max-height:760px){#hero{padding-top:150px}}
-#hero .lotus{position:absolute;top:-4px;right:6px;width:min(46vw,230px);transform-origin:60% 85%;animation:swayLt 7s ease-in-out infinite}
+#hero .mtn{position:absolute;right:0;bottom:0;width:min(130vw,680px);pointer-events:none}
+#hero .lotus{position:absolute;bottom:-6px;right:-4px;width:min(44vw,230px);transform-origin:60% 100%;animation:swayLt 7s ease-in-out infinite;mix-blend-mode:multiply}
 @keyframes swayLt{0%,100%{transform:rotate(2.5deg) translateY(0)}50%{transform:rotate(-2.5deg) translateY(4px)}}
-#hero .lily{position:absolute;top:-2px;left:6px;width:min(48vw,247px);transform-origin:53% 76%;animation:swayBq 6s ease-in-out infinite}
+#hero .bamboo{position:absolute;top:-2px;left:-4px;width:min(58vw,300px);transform-origin:8% 100%;animation:swayBb 8s ease-in-out infinite;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 99%);mask-image:linear-gradient(to bottom,#000 60%,transparent 99%)}
 @keyframes swayBq{0%,100%{transform:rotate(-3.5deg)}50%{transform:rotate(3.5deg)}}
 #hero .bfly1{position:absolute;top:50%;left:7%;width:38px;animation:flit 7s ease-in-out infinite}
 #hero .bfly2{position:absolute;top:58%;right:9%;width:30px;animation:flit 6s ease-in-out infinite reverse}
-#hero .chime{position:absolute;top:0;left:50%;width:26px;transform-origin:50% 0;animation:sway 4s ease-in-out infinite}
+#hero .chime{position:absolute;top:0;left:34%;width:34px;transform-origin:50% 0;animation:sway 4s ease-in-out infinite}
 @keyframes flit{0%,100%{transform:translate(0,0) rotate(-8deg)}50%{transform:translate(14px,-18px) rotate(10deg)}}
 .hero-in{text-align:center;position:relative;z-index:2;width:100%}
 .hero-in .hy{width:clamp(110px,32vw,150px);margin:0 auto 18px}
@@ -238,8 +235,8 @@ body.side-trai #giftTrai{order:-1}
   .jade{width:64px;margin-top:18px}
   .wrap{text-shadow:0 0 6px rgba(243,235,218,1),0 0 12px rgba(243,235,218,1)}
   .gbox{width:112px}
-  #hero .lotus{width:min(36.8vw,184px)}
-  #hero .lily{width:min(38.4vw,198px)}
+  #hero .lotus{width:min(40vw,184px)}
+  #hero .bamboo{width:min(54vw,250px)}
   .hero-in .hy{width:clamp(88px,25.6vw,120px);margin-bottom:14px}
 }
 /* ===== Máy tính: nội dung rộng hơn, cành hoa lớn hơn ở hai bên ===== */
@@ -347,8 +344,8 @@ footer{text-align:center;padding:90px 0 110px;position:relative;overflow:hidden}
 footer .hy{width:clamp(90px,26vw,120px);margin:0 auto 18px}
 footer .th{font-family:var(--script);font-weight:600;font-size:clamp(26px,7vw,34px);line-height:1.7;color:var(--ink);max-width:460px;margin:0 auto}
 footer .sign{margin-top:22px;font-family:var(--script);font-weight:600;font-size:24px;color:var(--rose)}
-footer .lantern{position:absolute;top:0;right:6%;width:min(22vw,110px);transform-origin:50% 0;animation:sway 5s ease-in-out infinite}
-footer .branch{position:absolute;bottom:10px;left:-3px;width:min(26vw,130px);transform:scaleX(-1)}
+footer .lantern{position:absolute;top:0;right:8%;width:min(11vw,48px);transform-origin:50% 0;animation:sway 5s ease-in-out infinite}
+footer .branch{position:absolute;bottom:0;left:-4px;width:min(40vw,190px);height:min(62vw,300px);object-fit:cover;object-position:left top;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 28%,#000 62%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 28%,#000 62%,transparent 100%)}
 footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 
 @media (prefers-reduced-motion:reduce){
@@ -362,28 +359,28 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 
 <!-- GIAO DIỆN 1 -->
 <div id="cover">
-  <img class="deco d-lantern" src="img/lantern.webp" alt="">
-  <div class="cb cb3"><img src="img/side-branch.webp" alt=""></div>
-  <div class="cb cb2 m"><img src="img/side-branch.webp" alt=""></div>
-  <div class="cb cb1 m"><img src="img/side-branch.webp" alt=""></div>
+  <img class="deco d-mtn" src="img/mountains.svg" alt="">
+  <img class="deco d-bamboo" src="img/bamboo.webp" alt="">
+  <img class="deco d-bell" src="img/bell.svg" alt="">
   <div class="cpet" id="cpet"></div>
-  <img class="deco d-cosmos" src="img/cosmos.webp" alt="">
+  <img class="deco d-lotus" src="img/lotus-pink.webp" alt="">
   <div class="hint">Bấm vào để xem thiệp</div>
   <button class="env" id="openBtn" aria-label="Mở thiệp"><img src="img/envelope.webp" alt="Phong bì thiệp cưới"></button>
   <div class="names" id="coverNames">Thanh Huyền <span class="amp-i">&amp;</span> Lý Tú</div>
 </div>
 
 <!-- GIAO DIỆN 2 -->
-<div class="branches" aria-hidden="true"><div class="br l"><img src="img/side-branch.webp" alt=""></div><div class="br r"><img src="img/side-branch.webp" alt=""></div></div>
+<div class="branches" aria-hidden="true"><div class="br l"><img src="img/bamboo.webp" alt=""></div><div class="br r"><img src="img/bamboo.webp" alt=""></div></div>
 <div class="petals" id="petals" aria-hidden="true"></div>
 
 <main id="card">
 
   <!-- Bìa -->
   <section id="hero">
-    <img class="lily" src="img/bouquet.webp" alt="">
-    <img class="lotus" src="img/lotus.webp" alt="">
-    <img class="chime" src="img/chime.webp" alt="">
+    <img class="mtn" src="img/mountains.svg" alt="">
+    <img class="bamboo" src="img/bamboo.webp" alt="">
+    <img class="lotus" src="img/lotus-pink.webp" alt="">
+    <img class="chime" src="img/bell.svg" alt="">
     <img class="bfly1" src="img/bfly1.webp" alt="">
     <img class="bfly2" src="img/bfly2.webp" alt="">
     <div class="wrap hero-in">
@@ -604,8 +601,8 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 
   <!-- Lời cảm ơn -->
   <footer>
-    <img class="lantern" src="img/lantern.webp" alt="">
-    <img class="branch" src="img/branch.webp" alt="">
+    <img class="lantern" src="img/bell.svg" alt="">
+    <img class="branch" src="img/bamboo.webp" alt="">
     <img class="girl rv" data-a="zoom" src="img/girl.webp" alt="">
     <div class="wrap">
       <img class="hy rv" data-a="zoom" src="img/hy.webp" alt="囍">
