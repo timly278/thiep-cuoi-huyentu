@@ -298,6 +298,8 @@ textarea{min-height:96px;resize:vertical}
 .opt span{display:inline-block;padding:8px 15px;border:1px solid rgba(184,146,74,.6);border-radius:999px;font-size:14px;background:#FFFDF6;transition:.2s}
 .opt input:checked+span{background:var(--rose);color:#fff;border-color:var(--rose)}
 .opt input:focus-visible+span{box-shadow:0 0 0 3px rgba(166,58,80,.25)}
+#sideBox{transition:opacity .25s}
+#sideBox.off{opacity:.38;pointer-events:none}
 .btn{display:inline-block;margin-top:20px;padding:12px 30px;border-radius:999px;background:var(--rose);color:#fff;letter-spacing:.14em;font-size:13px;font-weight:700;text-transform:uppercase;box-shadow:0 8px 16px rgba(166,58,80,.28);transition:.25s}
 .btn:hover{transform:translateY(-2px)}
 .btn.ghost{background:transparent;color:var(--rose);border:1px solid var(--rose);box-shadow:none}
@@ -533,11 +535,13 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
           <label class="opt"><input type="radio" name="att" value="Có" checked><span>Có, mình sẽ đến</span></label>
           <label class="opt"><input type="radio" name="att" value="Không"><span>Rất tiếc, mình bận</span></label>
         </div>
+        <div id="sideBox">
         <div class="lab">Bạn dự buổi tiệc nào?</div>
         <div class="opts">
           <label class="opt"><input type="radio" name="side" value="Nhà gái" id="sideGai"><span>Nhà gái · 23.12</span></label>
           <label class="opt"><input type="radio" name="side" value="Nhà trai" id="sideTrai"><span>Nhà trai · 24.12</span></label>
           <label class="opt"><input type="radio" name="side" value="Cả hai"><span>Cả hai</span></label>
+        </div>
         </div>
         <label for="rNum">Số người đi cùng</label>
         <select id="rNum"><option selected>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 trở lên</option></select>
@@ -791,9 +795,16 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
     $('#evTime').textContent=e.time;$('#evDate').textContent=e.dateTxt;$('#evLunar').textContent=e.lunar;
     $('#evPlace').textContent=e.place;$('#evAddr').textContent=e.addr;$('#evRoute').href=e.maps;
     renderCal();countdown();
-    var rg=$('#sideGai'),rt=$('#sideTrai');
-    if(!$$('input[name=side]:checked').length){(v==='gai'?rg:rt).checked=true}
+    syncAtt();
   }
+  /* Rất tiếc, mình bận -> khóa và bỏ chọn buổi tiệc; chọn lại "Có" -> tự chọn theo nhà đang xem */
+  function syncAtt(){
+    var absent=($$('input[name=att]:checked')[0]||{}).value==='Không';
+    $('#sideBox').classList.toggle('off',absent);
+    $$('input[name=side]').forEach(function(r){r.disabled=absent;if(absent)r.checked=false});
+    if(!absent&&!$$('input[name=side]:checked').length){(venue==='gai'?$('#sideGai'):$('#sideTrai')).checked=true}
+  }
+  $$('input[name=att]').forEach(function(r){r.addEventListener('change',syncAtt)});
   $$('.tab').forEach(function(t){t.addEventListener('click',function(){setVenue(t.dataset.v)})});
   setVenue(SIDE,true);
 
