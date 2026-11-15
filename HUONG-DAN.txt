@@ -1,0 +1,16 @@
+THIỆP CƯỚI - HƯỚNG DẪN ĐƯA LÊN GITHUB PAGES
+
+1) Tạo repo mới trên github.com (ví dụ: thiep-cuoi), để Public.
+2) Bấm "Add file" > "Upload files", kéo thả TOÀN BỘ nội dung thư mục này
+   (file index.html và thư mục img) vào, rồi bấm "Commit changes".
+3) Vào Settings > Pages > Source: "Deploy from a branch", Branch: main, thư mục / (root) > Save.
+4) Sau 1-2 phút, link thiệp sẽ là:  https://<tên-github>.github.io/<tên-repo>/
+   Link gửi khách:
+     Nhà gái :  .../<tên-repo>/?venue=nha-gai
+     Nhà trai:  .../<tên-repo>/?venue=nha-trai
+
+HIỆN TƯỜNG LỜI CHÚC (làm một lần):
+- Mở Google Sheet nhận câu trả lời của form > Tệp > Chia sẻ > Xuất bản lên web.
+- Chọn đúng trang tính chứa câu trả lời, định dạng "Giá trị được phân tách bằng dấu phẩy (.csv)" > Xuất bản.
+- Sao chép đường liên kết, gửi cho Claude (hoặc dán vào dòng  var SHEET_CSV='';  trong index.html).
+LƯU Ý: bản xuất bản công khai toàn bộ cột của trang tính đó (họ tên, tham dự, lời chúc...).
