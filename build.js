@@ -48,6 +48,9 @@ const check = function (key, p) {
 };
 
 const cfg = { SHEET_CSV: env.SHEET_CSV || '', IMG: {}, MUSIC: [] };
+if (cfg.SHEET_CSV && !/output=csv/.test(cfg.SHEET_CSV)) {
+  warn.push('SHEET_CSV chưa phải link CSV xuất bản (phải có "output=csv", dạng .../pub?gid=...&single=true&output=csv). Link /edit hoặc chia sẻ thường sẽ không đọc được lời chúc.');
+}
 
 Object.keys(env).forEach(function (k) {
   if (k.indexOf('IMG_') !== 0) return;

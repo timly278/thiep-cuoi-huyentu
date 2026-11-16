@@ -310,8 +310,12 @@ textarea{min-height:96px;resize:vertical}
 .err{color:var(--red);font-size:13px;margin-top:6px;min-height:18px}
 
 /* wishes wall */
-.wall{display:grid;gap:12px;margin-top:26px}
-.wish{background:#FFFBEF;border-left:3px solid var(--rose2);padding:12px 16px;border-radius:2px 8px 8px 2px;box-shadow:0 6px 14px rgba(110,80,50,.08);animation:pop .6s ease}
+.wall{display:flex;gap:12px;margin-top:26px;position:relative;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 2px 14px;overscroll-behavior-x:contain}
+.wall::-webkit-scrollbar{display:none}
+.wish{flex:0 0 88%;max-width:420px;scroll-snap-align:start;box-sizing:border-box;background:#FFFBEF;border-left:3px solid var(--rose2);padding:12px 16px;border-radius:2px 8px 8px 2px;box-shadow:0 6px 14px rgba(110,80,50,.08);animation:pop .6s ease}
+.wallnav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:2px;color:var(--rose);font-size:13px}
+.wallnav button{width:32px;height:32px;border-radius:50%;border:1px solid var(--rose);background:transparent;color:var(--rose);font-size:18px;line-height:1;cursor:pointer;padding:0}
+.wallnav button:active{background:var(--rose2)}
 .wish b{color:var(--rose)}
 .wish p{font-size:14.5px;margin-top:2px;white-space:pre-wrap;word-break:break-word}
 @keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -552,7 +556,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
         <div class="center"><button class="btn" type="submit" id="rSend">Gửi xác nhận &amp; lời chúc</button></div>
       </form>
       <div class="panel thanks" id="rThanks"><div class="t">Cảm ơn bạn!</div><div id="rThanksTx">Gia đình đã nhận được xác nhận của bạn.</div></div>
-      <div id="wallBox" style="display:none"><h2 class="rv d1" data-a="up" style="margin-top:44px;font-size:26px">Lời chúc từ mọi người</h2><div class="wall" id="wall"></div></div>
+      <div id="wallBox" style="display:none"><h2 class="rv d1" data-a="up" style="margin-top:44px;font-size:26px">Lời chúc từ mọi người</h2><div class="wall" id="wall" tabindex="0" aria-label="Lời chúc từ mọi người"></div><div class="wallnav" id="wallNav"><button type="button" id="wallPrev" aria-label="Lời chúc trước">‹</button><span id="wallInfo"></span><button type="button" id="wallNext" aria-label="Lời chúc sau">›</button></div></div>
     </div>
   </section>
 
@@ -620,7 +624,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
 <button id="musicBtn" type="button" aria-label="Bật/tắt nhạc" hidden>♪</button>
 
 
-<script src="config.js?v=545b8d6b"></script>
+<script src="config.js?v=6adf0681"></script>
 <script>
 (function(){
   'use strict';
@@ -834,7 +838,40 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
   function addWish(n,t){
     var d=document.createElement('div');d.className='wish';d.innerHTML='<b>'+esc(n)+'</b><p>'+esc(t)+'</p>';
     var w=$('#wall');w.insertBefore(d,w.firstChild);$('#wallBox').style.display='block';
+    w.scrollLeft=0;wallInfo();
   }
+  /* Khung lời chúc: vuốt ngang (scroll-snap) + tự chuyển, tạm dừng khi người xem chạm/vuốt */
+  var wallHold=0,wallSeen=false,wallReduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function wallIdx(){
+    var w=$('#wall'),c=w.children,x=w.scrollLeft,best=0,bd=1e9;
+    for(var i=0;i<c.length;i++){var dd=Math.abs(c[i].offsetLeft-x);if(dd<bd){bd=dd;best=i}}
+    return best;
+  }
+  function wallInfo(){
+    var w=$('#wall'),n=w.children.length;
+    $('#wallInfo').textContent=n?(wallIdx()+1)+' / '+n:'';
+    $('#wallNav').style.visibility=n>1?'visible':'hidden';
+  }
+  function wallGo(dir,auto){
+    var w=$('#wall'),c=w.children;if(c.length<2)return;
+    var atEnd=w.scrollLeft+w.clientWidth>=w.scrollWidth-4,i=wallIdx()+dir;
+    if(dir>0&&atEnd)i=0;else if(dir<0&&i<0)i=c.length-1;
+    i=Math.max(0,Math.min(c.length-1,i));
+    w.scrollTo({left:c[i].offsetLeft,behavior:'smooth'});
+    if(!auto)wallHold=Date.now()+8000;
+  }
+  (function(){
+    var w=$('#wall');
+    w.addEventListener('scroll',wallInfo,{passive:true});
+    ['touchstart','pointerdown','wheel','mouseenter','focusin'].forEach(function(e){
+      w.addEventListener(e,function(){wallHold=Date.now()+8000},{passive:true});
+    });
+    $('#wallPrev').addEventListener('click',function(){wallGo(-1)});
+    $('#wallNext').addEventListener('click',function(){wallGo(1)});
+    w.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){wallGo(-1);e.preventDefault()}else if(e.key==='ArrowRight'){wallGo(1);e.preventDefault()}});
+    if('IntersectionObserver' in window)new IntersectionObserver(function(en){wallSeen=en[0].isIntersecting},{threshold:.3}).observe(w);else wallSeen=true;
+    if(!wallReduce)setInterval(function(){if(wallSeen&&!document.hidden&&Date.now()>wallHold)wallGo(1,true)},4500);
+  })();
   function thanks(d,fallbackHref){
     $('#rsvpForm').style.display='none';var th=$('#rThanks');th.style.display='block';
     var tx=$('#rThanksTx');
@@ -873,6 +910,8 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
       var rows=parseCSV(t);if(rows.length<2)return;
       var h=rows[0].map(function(x){return x.toLowerCase()});
       var ni=h.findIndex(function(x){return x.indexOf('họ tên')>=0}),wi=h.findIndex(function(x){return x.indexOf('lời chúc')>=0});
+      if(ni<0&&h.length===2)ni=0;      /* tab chỉ có 2 cột: họ tên, lời chúc */
+      if(wi<0&&h.length===2)wi=1;
       if(ni<0||wi<0)return;
       rows.slice(1).filter(function(r){return (r[wi]||'').trim()}).slice(-60).forEach(function(r){addWish((r[ni]||'Khách mời').trim(),r[wi].trim())});
     }).catch(function(){});

@@ -15,8 +15,16 @@ THÊM ẢNH CƯỚI / NHẠC / ĐỔI ẢNH (mọi cấu hình nằm trong file 
 - Sửa .env xong chạy lệnh:  node build.js   (sinh ra config.js)
 - Upload cả .env, config.js, thư mục img và audio lên GitHub.
 
-HIỆN TƯỜNG LỜI CHÚC (làm một lần):
-- Mở Google Sheet nhận câu trả lời của form > Tệp > Chia sẻ > Xuất bản lên web.
-- Chọn đúng trang tính chứa câu trả lời, định dạng "Giá trị được phân tách bằng dấu phẩy (.csv)" > Xuất bản.
-- Sao chép đường liên kết, dán vào dòng  SHEET_CSV=  trong file .env (không sửa index.html).
-LƯU Ý: bản xuất bản công khai toàn bộ cột của trang tính đó (họ tên, tham dự, lời chúc...).
+TƯỜNG LỜI CHÚC (làm một lần; lời chúc lưu lâu dài trong Google Sheet, ai mở thiệp cũng thấy):
+Lời chúc khách gửi đã nằm sẵn trong Google Sheet nhận câu trả lời của form. Chỉ cần "xuất bản" đúng cách.
+Để KHÔNG lộ số người đi cùng / tham dự..., ta tạo một trang tính riêng chỉ có Họ tên + Lời chúc rồi chỉ xuất bản trang đó:
+1) Mở Google Sheet của form > bấm dấu + (góc dưới trái) thêm trang tính mới, đặt tên "LoiChuc".
+2) Ở ô A1 của trang "LoiChuc" dán công thức (đổi chữ cái cột cho khớp trang câu trả lời của bạn:
+   B = cột Họ tên, E = cột Lời chúc; tên trang đầu tiên có thể là 'Câu trả lời biểu mẫu 1' hoặc 'Form Responses 1'):
+     =QUERY('Câu trả lời biểu mẫu 1'!A:F; "select B, E where E is not null"; 1)
+   (nếu báo lỗi, thử đổi dấu ; thành dấu ,)
+3) Tệp > Chia sẻ > Xuất bản lên web > chọn đúng trang "LoiChuc" > định dạng "Giá trị được phân tách bằng dấu phẩy (.csv)" > Xuất bản.
+4) Sao chép đường liên kết (dạng .../pub?gid=...&single=true&output=csv), dán vào dòng  SHEET_CSV=  trong file .env.
+5) Chạy  node build.js  rồi commit/push config.js + index.html lên GitHub.
+Khung lời chúc tự chuyển ngang mỗi ~4,5 giây; khách vuốt tay (hoặc bấm nút < >) để xem lời khác, chạm vào thì tạm dừng tự chuyển.
+Muốn ẩn một lời chúc: xóa dòng đó (hoặc sửa nội dung) ở trang câu trả lời; trang "LoiChuc" tự cập nhật.
