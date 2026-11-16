@@ -24,6 +24,6 @@ window.APP_CONFIG = {
     "qr_nha_trai": "img/qr-nha-trai.png"
   },
   "MUSIC": [
-    "/Users/timly/Workspace/Huyen❤️/thiep-cuoi-huyentu/audio/wedding-music.mp3"
+    "audio/wedding-music.mp3"
   ]
 };
