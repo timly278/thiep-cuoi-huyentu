@@ -24,6 +24,6 @@ window.APP_CONFIG = {
     "qr_nha_trai": "img/qr-nha-trai.png?v=cc0bc7a6"
   },
   "MUSIC": [
-    "audio/wedding-music.mp3"
+    "audio/wedding-music-v2.mp3"
   ]
 };
