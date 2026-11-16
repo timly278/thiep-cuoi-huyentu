@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<title>Chỉnh góc ảnh chân dung</title>
+<style>
+:root{--bg:#F3EBDA;--ink:#5B4036;--muted:#8A7060;--rose:#A63A50;--gold:#B8924A}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Serif',Georgia,'Times New Roman',serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:22px;margin:0 0 4px;text-align:center;color:var(--rose)}
+.sub{font-size:13.5px;color:var(--muted);text-align:center;margin:0 0 20px;line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(255,252,243,.72);border:1px solid rgba(184,146,74,.45);border-radius:10px;padding:16px 14px 18px;text-align:center}
+.card h2{margin:0 0 12px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--rose)}
+.grid>*{min-width:0}
+.row{display:flex;flex-direction:column;align-items:center;gap:20px;padding-top:6px}
+.circ{position:relative;border-radius:50%;overflow:hidden;background:#E7DAC0;box-shadow:0 0 0 5px var(--bg),0 0 0 6.5px var(--gold),0 12px 24px rgba(110,80,50,.2);touch-action:none;user-select:none;-webkit-user-select:none}
+.circ.big{width:min(66vw,250px);aspect-ratio:1;cursor:grab}
+.circ.big:active{cursor:grabbing}
+.circ.small{width:112px;aspect-ratio:1;flex:none}
+.cap{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:-10px}
+.circ img{position:absolute;max-width:none;pointer-events:none;-webkit-user-drag:none;user-select:none}
+.tiny{font-size:11px;color:var(--muted);margin-top:8px;letter-spacing:.04em}
+.zr{display:flex;align-items:center;gap:10px;margin:18px 6px 0}
+.zr span{font-size:13px;color:var(--muted);white-space:nowrap}
+input[type=range]{flex:1;accent-color:var(--rose)}
+.bt{display:inline-block;margin:12px 4px 0;padding:8px 18px;border-radius:999px;border:1px solid var(--rose);background:transparent;color:var(--rose);font:inherit;font-size:13px;cursor:pointer}
+.bt.fill{background:var(--rose);color:#fff;box-shadow:0 6px 14px rgba(166,58,80,.25)}
+.out{margin-top:24px}
+textarea{width:100%;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);padding:10px 12px;border:1px solid rgba(184,146,74,.6);border-radius:6px;background:#FFFDF6;min-height:78px;resize:vertical}
+.msg{min-height:20px;font-size:13px;color:var(--rose);margin-top:8px;text-align:center}
+.full{margin:22px auto 0;max-width:300px}
+.full img{width:100%;display:block;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Chỉnh góc ảnh chân dung</h1>
+  <p class="sub">Kéo ảnh trong vòng tròn để dịch chuyển, dùng thanh trượt (hoặc chụm hai ngón / lăn chuột) để phóng to thu nhỏ.<br>Vòng nhỏ bên dưới là kích thước thật trên thiệp.</p>
+
+  <div class="grid">
+    <div class="card" id="cardGroom">
+      <h2>Chú rể · Lý Tú</h2>
+      <div class="row"><div class="circ big" data-k="groom"></div><div class="circ small" data-k="groom"></div><div class="cap">Kích thước thật trên thiệp</div></div>
+      <div class="zr"><span>Thu nhỏ</span><input type="range" min="1" max="8" step="0.01" data-k="groom"><span>Phóng to</span></div>
+      <button class="bt" type="button" data-reset="groom">Đặt lại</button>
+    </div>
+    <div class="card" id="cardBride">
+      <h2>Cô dâu · Thanh Huyền</h2>
+      <div class="row"><div class="circ big" data-k="bride"></div><div class="circ small" data-k="bride"></div><div class="cap">Kích thước thật trên thiệp</div></div>
+      <div class="zr"><span>Thu nhỏ</span><input type="range" min="1" max="8" step="0.01" data-k="bride"><span>Phóng to</span></div>
+      <button class="bt" type="button" data-reset="bride">Đặt lại</button>
+    </div>
+  </div>
+
+  <div class="center" style="text-align:center;margin-top:22px">
+    <button class="bt fill" type="button" id="btnSave">Lưu tạm &amp; xem thử trên thiệp nhà gái</button>
+    <button class="bt" type="button" id="btnCopy">Sao chép thông số</button>
+  </div>
+  <div class="msg" id="msg"></div>
+
+  <div class="out">
+    <textarea id="out" readonly aria-label="Thông số"></textarea>
+    <p class="tiny" style="text-align:center">Chỉnh xong, bấm "Sao chép thông số" rồi gửi cho Claude để đưa vào thiệp chính thức.</p>
+  </div>
+
+  <div class="full"><img id="full" alt="Ảnh gốc"></div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var SRC='img/portrait.webp';
+  var DEF={groom:{cx:.418,cy:.31,z:3.3},bride:{cx:.62,cy:.34,z:3.3}};
+  var KEY='portraitCrop';
+  var st={groom:{cx:DEF.groom.cx,cy:DEF.groom.cy,z:DEF.groom.z},bride:{cx:DEF.bride.cx,cy:DEF.bride.cy,z:DEF.bride.z}};
+  try{var sv=JSON.parse(localStorage.getItem(KEY));if(sv&&sv.groom&&sv.bride){st.groom=sv.groom;st.bride=sv.bride}}catch(e){}
+
+  var $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var nat={w:0,h:0};
+  var imgs=[];
+  function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
+
+  /* Công thức giống hệt hàm lay() trong index.html */
+  function geo(W,o){
+    var s=Math.max(W/nat.w,W/nat.h)*Math.max(1,o.z),dw=nat.w*s,dh=nat.h*s;
+    return {dw:dw,dh:dh,s:s};
+  }
+  function norm(k){
+    var o=st[k];o.z=clamp(+o.z||1,1,8);
+    var W=100,g=geo(W,o),hx=W/2/g.dw,hy=W/2/g.dh;
+    o.cx=clamp(+o.cx||.5,hx,1-hx);o.cy=clamp(+o.cy||.5,hy,1-hy);
+  }
+  function paint(){
+    ['groom','bride'].forEach(function(k){
+      norm(k);var o=st[k];
+      $$('.circ[data-k="'+k+'"]').forEach(function(el){
+        var W=el.clientWidth;if(!W)return;
+        var g=geo(W,o),im=el.querySelector('img');
+        im.style.width=g.dw+'px';im.style.height=g.dh+'px';
+        im.style.left=(W/2-o.cx*g.dw)+'px';im.style.top=(W/2-o.cy*g.dh)+'px';
+      });
+      var r=document.querySelector('input[data-k="'+k+'"]');if(r)r.value=o.z;
+    });
+    output();
+  }
+  function r3(v){return Math.round(v*1000)/1000}
+  function text(){
+    return 'groom:{cx:'+r3(st.groom.cx)+',cy:'+r3(st.groom.cy)+',z:'+r3(st.groom.z)+'}, bride:{cx:'+r3(st.bride.cx)+',cy:'+r3(st.bride.cy)+',z:'+r3(st.bride.z)+'}';
+  }
+  function output(){document.getElementById('out').value=text()}
+
+  function say(t){var m=document.getElementById('msg');m.textContent=t;clearTimeout(say.t);say.t=setTimeout(function(){m.textContent=''},3500)}
+
+  function setup(){
+    document.getElementById('full').src=SRC;
+    $$('.circ').forEach(function(el){
+      var im=new Image();im.src=SRC;im.draggable=false;im.alt='';el.appendChild(im);
+    });
+    $$('.circ.big').forEach(function(el){
+      var k=el.dataset.k,P={},last=null;
+      function dist(){var a=Object.keys(P);if(a.length<2)return 0;return Math.hypot(P[a[0]].x-P[a[1]].x,P[a[0]].y-P[a[1]].y)}
+      el.addEventListener('pointerdown',function(e){
+        el.setPointerCapture(e.pointerId);P[e.pointerId]={x:e.clientX,y:e.clientY};last=dist();
+      });
+      el.addEventListener('pointermove',function(e){
+        var p=P[e.pointerId];if(!p)return;
+        var o=st[k],W=el.clientWidth,g=geo(W,o),n=Object.keys(P).length;
+        if(n===1){
+          o.cx-=(e.clientX-p.x)/g.dw;o.cy-=(e.clientY-p.y)/g.dh;
+        }
+        P[e.pointerId]={x:e.clientX,y:e.clientY};
+        if(n>=2){var d=dist();if(last)o.z*=d/last;last=d}
+        paint();
+      });
+      function up(e){delete P[e.pointerId];last=dist()}
+      el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
+      el.addEventListener('wheel',function(e){e.preventDefault();st[k].z*=Math.exp(-e.deltaY*.0015);paint()},{passive:false});
+    });
+    $$('input[type=range]').forEach(function(r){
+      r.addEventListener('input',function(){st[r.dataset.k].z=parseFloat(r.value);paint()});
+    });
+    $$('[data-reset]').forEach(function(b){
+      b.onclick=function(){var k=b.dataset.reset;st[k]={cx:DEF[k].cx,cy:DEF[k].cy,z:DEF[k].z};paint()};
+    });
+    document.getElementById('btnSave').onclick=function(){
+      try{localStorage.setItem(KEY,JSON.stringify(st));location.href='index.html?venue=nha-gai&preview=1'}
+      catch(e){say('Trình duyệt không cho lưu tạm. Hãy sao chép thông số.')}
+    };
+    document.getElementById('btnCopy').onclick=function(){
+      var t=text(),ta=document.getElementById('out');
+      function fb(){ta.removeAttribute('readonly');ta.focus();ta.select();try{document.execCommand('copy');say('Đã sao chép.')}catch(e){say('Hãy chạm giữ ô bên dưới để sao chép.')}ta.setAttribute('readonly','')}
+      try{navigator.clipboard.writeText(t).then(function(){say('Đã sao chép.')},fb)}catch(e){fb()}
+    };
+    window.addEventListener('resize',paint);
+    paint();
+  }
+
+  var pre=new Image();
+  pre.onload=function(){nat.w=pre.naturalWidth;nat.h=pre.naturalHeight;setup()};
+  pre.onerror=function(){say('Không tải được ảnh img/portrait.webp')};
+  pre.src=SRC;
+})();
+</script>
+</body>
+</html>

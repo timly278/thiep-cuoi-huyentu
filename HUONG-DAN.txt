@@ -28,3 +28,8 @@ Lời chúc khách gửi đã nằm sẵn trong Google Sheet nhận câu trả l
 5) Chạy  node build.js  rồi commit/push config.js + index.html lên GitHub.
 Khung lời chúc tự chuyển ngang mỗi ~4,5 giây; khách vuốt tay (hoặc bấm nút < >) để xem lời khác, chạm vào thì tạm dừng tự chuyển.
 Muốn ẩn một lời chúc: xóa dòng đó (hoặc sửa nội dung) ở trang câu trả lời; trang "LoiChuc" tự cập nhật.
+
+CĂN GÓC ẢNH CHÂN DUNG CÔ DÂU / CHÚ RỂ (bản nhà gái):
+- Ảnh dùng chung: img/portrait.webp. Mở trang chinh-anh.html (cùng thư mục với index.html) để kéo/phóng to từng vòng tròn.
+- Bấm "Lưu tạm & xem thử trên thiệp nhà gái" để xem ngay (chỉ trên trình duyệt đang dùng, link có ?preview=1).
+- Bấm "Sao chép thông số" rồi dán vào biến PT trong index.html (tìm "var PT=") để áp dụng chính thức.
