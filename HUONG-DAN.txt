@@ -33,3 +33,10 @@ CĂN GÓC ẢNH CHÂN DUNG CÔ DÂU / CHÚ RỂ (bản nhà gái):
 - Ảnh dùng chung: img/portrait.webp. Mở trang chinh-anh.html (cùng thư mục với index.html) để kéo/phóng to từng vòng tròn.
 - Bấm "Lưu tạm & xem thử trên thiệp nhà gái" để xem ngay (chỉ trên trình duyệt đang dùng, link có ?preview=1).
 - Bấm "Sao chép thông số" rồi dán vào biến PT trong index.html (tìm "var PT=") để áp dụng chính thức.
+
+BẢN TIẾNG ANH (cho khách nước ngoài):
+- Thêm &lang=en vào link:  .../?venue=nha-gai&lang=en   và   .../?venue=nha-trai&lang=en
+- Nội dung dịch nằm trong lang.js (từ điển D: câu tiếng Việt -> tiếng Anh). Sửa câu tiếng Anh ở đó.
+- Nếu sửa/thêm chữ tiếng Việt trong index.html, nhớ thêm dòng dịch tương ứng vào lang.js (nếu không, câu đó vẫn hiện tiếng Việt ở bản tiếng Anh).
+- Dữ liệu gửi về Google Form luôn bằng tiếng Việt (Có/Không, Nhà gái/Nhà trai...), không đổi theo ngôn ngữ.
+- Góc trên bên phải có nút VI | EN để khách tự đổi.
