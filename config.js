@@ -1,6 +1,6 @@
 /* TỰ SINH từ .env bằng "node build.js" - đừng sửa tay */
 window.APP_CONFIG = {
-  "SHEET_CSV": "https://docs.google.com/spreadsheets/d/1dMAgFrzLVqMdlZC68uhBUO2occzn9YSQOr-3R4ZiNp8/edit?usp=sharing",
+  "SHEET_CSV": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR5k4C3OeKKaw_XtbZLOEIK8BvVeFou3hxf2DzMnvSI-Dfte3b711-DelYdJk0jXoHHtXbDDS9LeKjv/pub?gid=869655766&single=true&output=csv",
   "IMG": {
     "bride": "img/bride-2.webp?v=01171ae9",
     "groom": "img/groom.webp?v=7c26e16b",
