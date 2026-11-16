@@ -705,6 +705,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
     if(/[?&]preview=1/.test(location.search)){try{var ov=JSON.parse(localStorage.getItem('portraitCrop3'));if(ov&&ov.groom&&ov.bride){PT.groom=ov.groom;PT.bride=ov.bride}}catch(e){}}
     /* Hoa lá mọc quanh vòng tròn: cành lá xanh dịu + vài đóa hoa đào nhỏ, vẽ bằng SVG (mirror = lật ngang cho vòng bên phải) */
     function wreath(mirror){
+      if(SIDE==='trai')return '';
       var C=50,R=53.5,LC=['#7FA08A','#6C8F79','#97B5A0','#5F836E'],o='';
       function pt(a,r){var t=a*Math.PI/180;return [C+r*Math.cos(t),C+r*Math.sin(t)]}
       function leaf(x,y,dir,len,col){
