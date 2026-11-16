@@ -694,7 +694,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
     $('#signNames').innerHTML=o[0].s+' '+AMP+' '+o[1].s;
     var sil='<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="17" fill="#B8924A"/><path d="M12 100c0-24 17-38 38-38s38 14 38 38z" fill="#B8924A"/></svg>';
     $('#duoBox').innerHTML=[P.groom,P.bride].map(function(p,i){
-      var fig='<figure class="av rv'+(i?' d1':'')+'" data-a="'+(i?'right':'left')+'"><div class="circ">'+sil+'<div class="fr" data-id="'+(p===P.bride?'bride':'groom')+'" data-src="'+p.img+'" data-cy=".4" data-name="'+p.role+' '+p.s+'" data-circle="1"></div></div><figcaption><b>'+p.role+'</b><span>'+p.s+'</span></figcaption></figure>';
+      var fig='<figure class="av rv'+(i?' d1':'')+'" data-a="'+(i?'right':'left')+'"><div class="circ">'+sil+'<div class="fr" data-id="'+(p===P.bride?'bride':'groom')+'" data-src="'+p.img+'" data-cy=".44" data-zoom="1.22" data-name="'+p.role+' '+p.s+'" data-circle="1"></div></div><figcaption><b>'+p.role+'</b><span>'+p.s+'</span></figcaption></figure>';
       return i? '<div class="amp-i rv d1" data-a="zoom">&amp;</div>'+fig : fig;
     }).join('');
     var F={gai:{t:'Nhà gái',p:['Ông Nguyễn Danh Hải','Bà Đào Thị Lợi'],a:'Năm Trại, xã Quốc Oai,<br>TP Hà Nội',place:'Năm Trại • Quốc Oai • Hà Nội',d:'Thứ Tư, 23.12.2026',l:'15 tháng 11 âm lịch',ev:'Tiệc mừng tại tư gia nhà gái'},
@@ -978,7 +978,7 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
       var d=fr.dataset;
       if(!d.circle)fr.style.setProperty('--r',fr._r);
       var W=fr.clientWidth,H=fr.clientHeight;if(!W||!H)return;
-      var s=Math.max(W/im.naturalWidth,H/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;
+      var s=Math.max(W/im.naturalWidth,H/im.naturalHeight)*Math.max(1,num(d.zoom,1)),dw=im.naturalWidth*s,dh=im.naturalHeight*s;
       var l=clamp(W/2-num(d.cx,.5)*dw,W-dw,0),t=clamp(H/2-num(d.cy,.5)*dh,H-dh,0);
       im.style.width=dw+'px';im.style.height=dh+'px';im.style.left=l+'px';im.style.top=t+'px';
     }
