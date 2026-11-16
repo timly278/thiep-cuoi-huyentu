@@ -3,6 +3,7 @@
    Chạy:  node build.js
    Không cần cài thêm gì. */
 const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 
 const MAX_WED = 10; // số ảnh cưới tối đa (IMG_W1..IMG_W10)
@@ -72,10 +73,24 @@ Object.keys(env).forEach(function (k) {
   if (m && +m[1] > MAX_MP3) warn.push(k + ' bị bỏ qua (chỉ nhận MP3_1..MP3_' + MAX_MP3 + ')');
 });
 
+/* Chống cache: gắn ?v=<mã băm nội dung file> vào đường dẫn ảnh. Sửa ảnh -> mã đổi -> trình duyệt tải bản mới ngay khi reload. */
+const hashOf = function (buf) { return crypto.createHash('md5').update(buf).digest('hex').slice(0, 8); };
+Object.keys(cfg.IMG).forEach(function (k) {
+  const p = cfg.IMG[k];
+  const f = path.join(dir, p);
+  if (!isUrl(p) && fs.existsSync(f)) cfg.IMG[k] = p + '?v=' + hashOf(fs.readFileSync(f));
+});
+
 fs.writeFileSync(
   path.join(dir, 'config.js'),
   '/* TỰ SINH từ .env bằng "node build.js" - đừng sửa tay */\nwindow.APP_CONFIG = ' + JSON.stringify(cfg, null, 2) + ';\n'
 );
+
+/* Gắn mã băm vào thẻ nạp config.js trong index.html (index.html luôn được kiểm tra lại khi reload) */
+const htmlFile = path.join(dir, 'index.html');
+const html = fs.readFileSync(htmlFile, 'utf8');
+const html2 = html.replace(/<script src="config\.js[^"]*"><\/script>/, '<script src="config.js?v=' + hashOf(fs.readFileSync(path.join(dir, 'config.js'))) + '"></script>');
+if (html2 !== html) fs.writeFileSync(htmlFile, html2);
 
 const wed = Object.keys(cfg.IMG).filter(function (k) { return /^w\d+$/.test(k); }).length;
 console.log('Đã ghi config.js: ' + Object.keys(cfg.IMG).length + ' ảnh (' + wed + ' ảnh cưới), ' +
