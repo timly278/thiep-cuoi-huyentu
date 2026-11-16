@@ -211,7 +211,7 @@ body.side-trai #giftTrai{order:-1}
 .pics{display:flex;gap:10px;align-items:flex-start;justify-content:center;margin-top:10px}
 .pics .fr{flex:var(--r,.75) 1 0;min-width:0;aspect-ratio:var(--r,.75)}
 .pics.alt .fr:nth-child(odd){transform-origin:50% 100%}
-.fr{position:relative;overflow:hidden;border:0;border-radius:0;background:rgba(231,218,192,.45);box-sizing:border-box;--f:min(12%,34px);
+.fr{position:relative;overflow:hidden;border:0;border-radius:0;background:rgba(231,218,192,.45);box-sizing:border-box;--f:min(5%,14px);
   -webkit-mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent),linear-gradient(180deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent);
   -webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent),linear-gradient(180deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent);
@@ -262,7 +262,7 @@ body.side-trai #giftTrai{order:-1}
 .strip{display:flex;align-items:center;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:20px 20px 28px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab}
 .strip::-webkit-scrollbar{display:none}
 .strip.drag{cursor:grabbing;scroll-snap-type:none}
-.strip .fr{flex:0 0 auto;height:min(86vw,420px);max-width:68vw;aspect-ratio:var(--r,.75);scroll-snap-align:center;scroll-snap-stop:always;transform-origin:50% 50%;will-change:transform,opacity;transition:transform .12s linear,opacity .12s linear}
+.strip .fr{--f:min(12%,34px);flex:0 0 auto;height:min(86vw,420px);max-width:68vw;aspect-ratio:var(--r,.75);scroll-snap-align:center;scroll-snap-stop:always;transform-origin:50% 50%;will-change:transform,opacity;transition:transform .12s linear,opacity .12s linear}
 .shint{font-size:11.5px;color:var(--muted);text-align:center;letter-spacing:.04em}
 .sa{display:none;position:absolute;top:calc(50% - 30px);width:38px;height:38px;border-radius:50%;border:1px solid rgba(184,146,74,.8);background:rgba(255,250,240,.92);color:#a63a50;font-size:22px;line-height:1;cursor:pointer;z-index:3}
 .sa.l{left:6px}.sa.r{right:6px}
