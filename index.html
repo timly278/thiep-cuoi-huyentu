@@ -124,7 +124,7 @@ body.past-hero .branches{opacity:.88}
 .duo .amp-i{font-size:34px;color:var(--rose);line-height:1;align-self:center;margin-top:-26px}
 .av{text-align:center;width:clamp(124px,37vw,178px)}
 .circ{position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 38%,#FBF6EA,#E7DAC0);
-  -webkit-mask-image:radial-gradient(closest-side,#000 70%,rgba(0,0,0,.6) 85%,transparent 100%);mask-image:radial-gradient(closest-side,#000 70%,rgba(0,0,0,.6) 85%,transparent 100%)}
+  box-shadow:0 0 0 5px var(--bg),0 0 0 6.5px var(--gold),0 16px 28px rgba(110,80,50,.2)}
 .circ svg{position:absolute;left:50%;bottom:0;width:70%;transform:translateX(-50%);opacity:.5}
 .circ img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .av figcaption{margin-top:18px}
@@ -217,7 +217,8 @@ body.side-trai #giftTrai{order:-1}
   mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent),linear-gradient(180deg,transparent,rgba(0,0,0,.55) calc(var(--f)*.45),#000 var(--f),#000 calc(100% - var(--f)),rgba(0,0,0,.55) calc(100% - var(--f)*.45),transparent);
   mask-composite:intersect}
 .fr img{position:absolute;max-width:none;width:auto;height:auto;left:0;top:0;user-select:none;-webkit-user-drag:none;pointer-events:none;filter:sepia(.12) saturate(.96)}
-.circ .fr{position:absolute;inset:0;background:transparent;-webkit-mask-image:none;mask-image:none}
+.circ .fr{position:absolute;inset:0;border:0;border-radius:0;box-shadow:none;background:transparent;-webkit-mask-image:none;mask-image:none}
+.circ .fr img{filter:none}
 
 
 /* ===== Điện thoại: bố cục gọn hơn (tự nhận theo độ rộng màn hình) ===== */
