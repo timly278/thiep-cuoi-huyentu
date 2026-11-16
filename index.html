@@ -695,8 +695,8 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
     var sil='<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="17" fill="#B8924A"/><path d="M12 100c0-24 17-38 38-38s38 14 38 38z" fill="#B8924A"/></svg>';
     /* Bản nhà gái: ảnh chân dung chung của hai bạn, mỗi vòng tròn cắt riêng (cx, cy = tâm cắt theo tỉ lệ ảnh, z = độ zoom).
        Chỉnh bằng trang chinh-anh.html rồi dán thông số vào đây. Thêm ?preview=1 vào link để xem thử thông số đang lưu tạm trong trình duyệt. */
-    var PT={src:'img/portrait.webp',groom:{cx:.418,cy:.31,z:3.3},bride:{cx:.62,cy:.34,z:3.3}};
-    if(/[?&]preview=1/.test(location.search)){try{var ov=JSON.parse(localStorage.getItem('portraitCrop'));if(ov&&ov.groom&&ov.bride){PT.groom=ov.groom;PT.bride=ov.bride}}catch(e){}}
+    var PT={src:'img/portrait.webp?v=2',groom:{cx:.418,cy:.268,z:3.3},bride:{cx:.63,cy:.285,z:3.3}};
+    if(/[?&]preview=1/.test(location.search)){try{var ov=JSON.parse(localStorage.getItem('portraitCrop2'));if(ov&&ov.groom&&ov.bride){PT.groom=ov.groom;PT.bride=ov.bride}}catch(e){}}
     $('#duoBox').innerHTML=[P.groom,P.bride].map(function(p,i){
       var cr=SIDE==='gai'?(p===P.bride?PT.bride:PT.groom):null;
       var fa=cr?'data-src="'+PT.src+'" data-cx="'+cr.cx+'" data-cy="'+cr.cy+'" data-zoom="'+cr.z+'"':'data-src="'+p.img+'" data-cy=".44" data-zoom="1.22"';
