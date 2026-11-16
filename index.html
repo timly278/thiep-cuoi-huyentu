@@ -127,6 +127,12 @@ body.past-hero .branches{opacity:.88}
   box-shadow:0 0 0 5px var(--bg),0 0 0 6.5px var(--gold),0 16px 28px rgba(110,80,50,.2)}
 .circ svg{position:absolute;left:50%;bottom:0;width:70%;transform:translateX(-50%);opacity:.5}
 .circ img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.circw{position:relative}
+.wreath{position:absolute;left:-14%;top:-14%;width:128%;height:128%;overflow:visible;pointer-events:none}
+.wreath .sway{transform-origin:50px 50px;animation:wsway 9s ease-in-out infinite}
+.wreath.m .sway{animation-delay:-4.5s}
+@keyframes wsway{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+@media(prefers-reduced-motion:reduce){.wreath .sway{animation:none}}
 .av figcaption{margin-top:18px}
 .av figcaption b{display:block;font-size:12px;letter-spacing:.3em;color:var(--rose);text-transform:uppercase}
 .av figcaption span{display:block;font-family:var(--script);font-weight:600;font-size:25px;margin-top:2px}
@@ -697,10 +703,39 @@ footer .girl{position:absolute;bottom:8px;right:10px;width:70px}
        Chỉnh bằng trang chinh-anh.html rồi dán thông số vào đây. Thêm ?preview=1 vào link để xem thử thông số đang lưu tạm trong trình duyệt. */
     var PT={src:'img/portrait.webp?v=2',groom:{cx:.415,cy:.255,z:3.55},bride:{cx:.649,cy:.285,z:3.55}};
     if(/[?&]preview=1/.test(location.search)){try{var ov=JSON.parse(localStorage.getItem('portraitCrop3'));if(ov&&ov.groom&&ov.bride){PT.groom=ov.groom;PT.bride=ov.bride}}catch(e){}}
+    /* Hoa lá mọc quanh vòng tròn: cành lá xanh dịu + vài đóa hoa đào nhỏ, vẽ bằng SVG (mirror = lật ngang cho vòng bên phải) */
+    function wreath(mirror){
+      var C=50,R=53.5,LC=['#7FA08A','#6C8F79','#97B5A0','#5F836E'],o='';
+      function pt(a,r){var t=a*Math.PI/180;return [C+r*Math.cos(t),C+r*Math.sin(t)]}
+      function leaf(x,y,dir,len,col){
+        return '<g transform="translate('+x.toFixed(2)+' '+y.toFixed(2)+') rotate('+dir.toFixed(1)+') scale('+(len/12).toFixed(3)+')"><path d="M0 0C3-3.4 8-3.6 12 0C8 3.6 3 3.4 0 0Z" fill="'+col+'" fill-opacity=".92"/><path d="M.8 0L10 0" stroke="#fff" stroke-opacity=".4" stroke-width=".35" fill="none"/></g>';
+      }
+      function bloom(x,y,r,rot,petal,mid){
+        var k,h='<g transform="translate('+x.toFixed(2)+' '+y.toFixed(2)+') rotate('+rot+')">';
+        for(k=0;k<5;k++)h+='<ellipse cx="'+(r*.62).toFixed(2)+'" cy="0" rx="'+(r*.62).toFixed(2)+'" ry="'+(r*.4).toFixed(2)+'" transform="rotate('+(k*72)+')" fill="'+petal+'" stroke="#D98A98" stroke-opacity=".55" stroke-width=".22"/>';
+        return h+'<circle r="'+(r*.26).toFixed(2)+'" fill="'+mid+'"/></g>';
+      }
+      function branch(a0,a1,n,s0){
+        var p0=pt(a0,R),p1=pt(a1,R),i,t,th,P,dir,sd,len,h='';
+        h+='<path d="M'+p0[0].toFixed(2)+' '+p0[1].toFixed(2)+'A'+R+' '+R+' 0 0 1 '+p1[0].toFixed(2)+' '+p1[1].toFixed(2)+'" stroke="#7F9C89" stroke-width=".7" stroke-linecap="round" fill="none"/>';
+        for(i=0;i<n;i++){
+          t=(i+.5)/n;th=a0+(a1-a0)*t;P=pt(th,R);sd=(i+s0)%2?1:-1;
+          dir=th+90-sd*(38+(i%3)*5);len=(13-6*t)*(.92+((i*7)%5)*.04);
+          h+=leaf(P[0],P[1],dir,len,LC[(i+s0)%4]);
+        }
+        var tip=pt(a1,R);h+=leaf(tip[0],tip[1],a1+90,5.2,LC[1]);
+        for(i=1;i<n;i+=3){th=a0+(a1-a0)*(i/n);P=pt(th,R+1.1);h+='<circle cx="'+P[0].toFixed(2)+'" cy="'+P[1].toFixed(2)+'" r=".85" fill="#C9A15A"/>'}
+        return h;
+      }
+      o+=branch(146,266,10,0)+branch(24,78,5,1);
+      var b1=pt(146,R),b2=pt(158,R+1),b3=pt(24,R),b4=pt(33,R+.8);
+      o+=bloom(b1[0],b1[1],4.6,-20,'#F6D3C8','#D9B26A')+bloom(b2[0],b2[1],3,12,'#FBE6DF','#D9B26A')+bloom(b3[0],b3[1],3.8,30,'#F6D3C8','#D9B26A')+bloom(b4[0],b4[1],2.4,-8,'#FBE6DF','#D9B26A');
+      return '<svg class="wreath'+(mirror?' m':'')+'" viewBox="-14 -14 128 128" aria-hidden="true"><g'+(mirror?' transform="translate(100 0) scale(-1 1)"':'')+'><g class="sway">'+o+'</g></g></svg>';
+    }
     $('#duoBox').innerHTML=[P.groom,P.bride].map(function(p,i){
       var cr=SIDE==='gai'?(p===P.bride?PT.bride:PT.groom):null;
       var fa=cr?'data-src="'+PT.src+'" data-cx="'+cr.cx+'" data-cy="'+cr.cy+'" data-zoom="'+cr.z+'"':'data-src="'+p.img+'" data-cy=".44" data-zoom="1.22"';
-      var fig='<figure class="av rv'+(i?' d1':'')+'" data-a="'+(i?'right':'left')+'"><div class="circ">'+sil+'<div class="fr" data-id="'+(p===P.bride?'bride':'groom')+'" '+fa+' data-name="'+p.role+' '+p.s+'" data-circle="1"></div></div><figcaption><b>'+p.role+'</b><span>'+p.s+'</span></figcaption></figure>';
+      var fig='<figure class="av rv'+(i?' d1':'')+'" data-a="'+(i?'right':'left')+'"><div class="circw"><div class="circ">'+sil+'<div class="fr" data-id="'+(p===P.bride?'bride':'groom')+'" '+fa+' data-name="'+p.role+' '+p.s+'" data-circle="1"></div></div>'+wreath(i)+'</div><figcaption><b>'+p.role+'</b><span>'+p.s+'</span></figcaption></figure>';
       return i? '<div class="amp-i rv d1" data-a="zoom">&amp;</div>'+fig : fig;
     }).join('');
     var F={gai:{t:'Nhà gái',p:['Ông Nguyễn Danh Hải','Bà Đào Thị Lợi'],a:'Năm Trại, xã Quốc Oai,<br>TP Hà Nội',place:'Năm Trại • Quốc Oai • Hà Nội',d:'Thứ Tư, 23.12.2026',l:'15 tháng 11 âm lịch',ev:'Tiệc mừng tại tư gia nhà gái'},
