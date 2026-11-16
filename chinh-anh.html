@@ -32,6 +32,13 @@ input[type=range]{flex:1;accent-color:var(--rose)}
 .bt.fill{background:var(--rose);color:#fff;box-shadow:0 6px 14px rgba(166,58,80,.25)}
 .out{margin-top:24px}
 textarea{width:100%;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);padding:10px 12px;border:1px solid rgba(184,146,74,.6);border-radius:6px;background:#FFFDF6;min-height:78px;resize:vertical}
+.pct{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:14px}
+.pct input[type=number]{width:84px;font:inherit;font-size:16px;text-align:center;color:var(--ink);padding:7px 8px;border:1px solid rgba(184,146,74,.6);border-radius:6px;background:#FFFDF6}
+.pct .st{width:34px;height:34px;border-radius:50%;border:1px solid var(--rose);background:transparent;color:var(--rose);font-size:20px;line-height:1;cursor:pointer;padding:0}
+.sum{position:sticky;top:0;z-index:5;margin:0 -16px 16px;padding:9px 12px;background:rgba(243,235,218,.96);border-bottom:1px solid rgba(184,146,74,.45);text-align:center;font-size:14px}
+.sum b{color:var(--rose)}
+.sum .eq{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:999px;font-size:12px;background:rgba(166,58,80,.1);color:var(--rose)}
+.sum .eq.ok{background:rgba(70,140,90,.15);color:#3d7a52}
 .msg{min-height:20px;font-size:13px;color:var(--rose);margin-top:8px;text-align:center}
 .full{margin:22px auto 0;max-width:300px}
 .full img{width:100%;display:block;border-radius:6px}
@@ -42,17 +49,23 @@ textarea{width:100%;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:va
   <h1>Chỉnh góc ảnh chân dung</h1>
   <p class="sub">Kéo ảnh trong vòng tròn để dịch chuyển, dùng thanh trượt (hoặc chụm hai ngón / lăn chuột) để phóng to thu nhỏ.<br>Vòng nhỏ bên dưới là kích thước thật trên thiệp.</p>
 
+  <div class="sum" id="sum"></div>
+
   <div class="grid">
     <div class="card" id="cardGroom">
       <h2>Chú rể · Lý Tú</h2>
       <div class="row"><div class="circ big" data-k="groom"></div><div class="circ small" data-k="groom"></div><div class="cap">Kích thước thật trên thiệp</div></div>
       <div class="zr"><span>Thu nhỏ</span><input type="range" min="1" max="8" step="0.01" data-k="groom"><span>Phóng to</span></div>
+      <div class="pct"><button class="st" type="button" data-step="-5" data-k="groom" aria-label="Giảm 5%">−</button><input type="number" inputmode="numeric" min="100" max="800" step="1" data-pct="groom" aria-label="Phần trăm zoom"><span>%</span><button class="st" type="button" data-step="5" data-k="groom" aria-label="Tăng 5%">+</button></div>
+      <button class="bt" type="button" data-same="bride">Bằng cô dâu</button>
       <button class="bt" type="button" data-reset="groom">Đặt lại</button>
     </div>
     <div class="card" id="cardBride">
       <h2>Cô dâu · Thanh Huyền</h2>
       <div class="row"><div class="circ big" data-k="bride"></div><div class="circ small" data-k="bride"></div><div class="cap">Kích thước thật trên thiệp</div></div>
       <div class="zr"><span>Thu nhỏ</span><input type="range" min="1" max="8" step="0.01" data-k="bride"><span>Phóng to</span></div>
+      <div class="pct"><button class="st" type="button" data-step="-5" data-k="bride" aria-label="Giảm 5%">−</button><input type="number" inputmode="numeric" min="100" max="800" step="1" data-pct="bride" aria-label="Phần trăm zoom"><span>%</span><button class="st" type="button" data-step="5" data-k="bride" aria-label="Tăng 5%">+</button></div>
+      <button class="bt" type="button" data-same="groom">Bằng chú rể</button>
       <button class="bt" type="button" data-reset="bride">Đặt lại</button>
     </div>
   </div>
@@ -104,8 +117,11 @@ textarea{width:100%;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:va
         im.style.width=g.dw+'px';im.style.height=g.dh+'px';
         im.style.left=(W/2-o.cx*g.dw)+'px';im.style.top=(W/2-o.cy*g.dh)+'px';
       });
-      var r=document.querySelector('input[data-k="'+k+'"]');if(r)r.value=o.z;
+      var r=document.querySelector('input[type=range][data-k="'+k+'"]');if(r)r.value=o.z;
+      var n=document.querySelector('input[data-pct="'+k+'"]');if(n&&document.activeElement!==n)n.value=Math.round(o.z*100);
     });
+    var a=Math.round(st.groom.z*100),b=Math.round(st.bride.z*100),eq=Math.abs(st.groom.z-st.bride.z)<.005;
+    document.getElementById('sum').innerHTML='Chú rể <b>'+a+'%</b> · Cô dâu <b>'+b+'%</b><span class="eq'+(eq?' ok':'')+'">'+(eq?'✓ bằng nhau':(a>b?'chú rể lớn hơn '+(a-b)+'%':'cô dâu lớn hơn '+(b-a)+'%'))+'</span>';
     output();
   }
   function r3(v){return Math.round(v*1000)/1000}
@@ -143,6 +159,18 @@ textarea{width:100%;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:va
     });
     $$('input[type=range]').forEach(function(r){
       r.addEventListener('input',function(){st[r.dataset.k].z=parseFloat(r.value);paint()});
+    });
+    $$('input[data-pct]').forEach(function(n){
+      function apply(){var v=parseFloat(n.value);if(isNaN(v))return;st[n.dataset.pct].z=v/100;paint()}
+      n.addEventListener('input',apply);
+      n.addEventListener('change',function(){apply();n.value=Math.round(st[n.dataset.pct].z*100)});
+      n.addEventListener('keydown',function(e){if(e.key==='Enter')n.blur()});
+    });
+    $$('[data-step]').forEach(function(b){
+      b.onclick=function(){var k=b.dataset.k;st[k].z=Math.round(st[k].z*100+parseFloat(b.dataset.step))/100;paint()};
+    });
+    $$('[data-same]').forEach(function(b){
+      b.onclick=function(){var src=b.dataset.same,dst=src==='groom'?'bride':'groom';st[dst].z=st[src].z;paint()};
     });
     $$('[data-reset]').forEach(function(b){
       b.onclick=function(){var k=b.dataset.reset;st[k]={cx:DEF[k].cx,cy:DEF[k].cy,z:DEF[k].z};paint()};
